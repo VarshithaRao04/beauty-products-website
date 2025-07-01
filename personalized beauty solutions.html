@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personalized Beauty Solutions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f3f8ff;
+      color: #333;
+    }
+    header {
+      background-color : #c7baa8;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    .input-section, .result-section, .product-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .input-section h2, .result-section h2, .product-section h2 {
+      margin-top: 0;
+    }
+    .preview {
+      margin-top: 10px;
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 5px;
+    }
+    .btn {
+      background: #ff6f91;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .btn:hover {
+      background: #ff3f71;
+    }
+    .radio-group {
+      margin: 15px 0;
+    }
+    .radio-group label {
+      margin-right: 15px;
+      font-size: 16px;
+    }
+    .error {
+      color: #ff3f71;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    /* Product Section Styles */
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .product {
+      background: #ead8c0;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 250px;
+      text-align: center;
+    }
+    .product img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+    .product-info {
+      padding: 10px;
+    }
+    .product-info h4 {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+    .product-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Personalized Beauty Solutions</h1>
+  </header>
+  <div class="container">
+    <div class="input-section">
+      <h2>Upload Your Photo</h2>
+      <p>
+        Select your photo, then choose whether you need beauty product recommendations or a facial process. Our system will simulate an analysis based on your skin tone.
+      </p>
+      <input type="file" id="photoInput" accept="image/*" />
+      <br />
+      <img id="photoPreview" class="preview" src="" alt="Photo Preview" style="display:none;" />
+      
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="service" value="product" checked /> Beauty Products
+        </label>
+        <label>
+          <input type="radio" name="service" value="facial" /> Facial Process
+        </label>
+      </div>
+      <button class="btn" id="analyzeBtn">Analyze &amp; Get Suggestions</button>
+      <div id="errorMessage" class="error" style="display:none;">You did not provide any photo. Please upload your photo to continue.</div>
+    </div>
+    
+    <div class="result-section" id="resultSection" style="display:none;">
+      <h2>Your Personalized Suggestions</h2>
+      <div id="suggestions"></div>
+    </div>
+
+    <div class="product-section" id="productSection" style="display:none;">
+      <h2>Featured Products</h2>
+      <div class="products" id="productList">
+        <!-- Products will be added dynamically -->
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Display the uploaded image as a preview.
+    document.getElementById('photoInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      const errorMessage = document.getElementById('errorMessage');
+      if (file) {
+        errorMessage.style.display = 'none';
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('photoPreview');
+          img.src = e.target.result;
+          img.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // Simulate an analysis and provide suggestions based on the chosen service.
+    document.getElementById('analyzeBtn').addEventListener('click', function() {
+      const photoInput = document.getElementById('photoInput');
+      const errorMessage = document.getElementById('errorMessage');
+      
+      // Check if a photo has been uploaded.
+      if (!photoInput.files || photoInput.files.length === 0) {
+        errorMessage.style.display = 'block';
+        document.getElementById('resultSection').style.display = 'none';
+        document.getElementById('productSection').style.display = 'none';
+        return;
+      } else {
+        errorMessage.style.display = 'none';
+      }
+      
+      // In a real-world scenario, you would perform face analysis here.
+      // For this demo, we'll randomly select a skin tone.
+      const skinTones = ['Fair', 'Medium', 'Dark'];
+      const detectedTone = skinTones[Math.floor(Math.random() * skinTones.length)];
+  
+      // Get the selected service (beauty products or facial process).
+      const service = document.querySelector('input[name="service"]:checked').value;
+      
+      // Prepare the result content.
+      let suggestionHTML = `<p><strong>Detected Skin Tone:</strong> ${detectedTone}</p>`;
+      
+      if (service === 'product') {
+        suggestionHTML += `<h3>Recommended Beauty Products:</h3>`;
+        if (detectedTone === 'Fair') {
+          suggestionHTML += `<ul>
+                                <li>Brightening Serum</li>
+                                <li>Moisturizer with SPF 30</li>
+                                <li>Lightweight Foundation</li>
+                              </ul>`;
+          loadProducts([
+            { name: "Brightening Serum", price: "$29.99", image: "glow guru images/Brightening_serum.webp" },
+            { name: "SPF Moisturizer", price: "$19.99", image: "glow guru images/SPF_Moisturizer.webp" },
+            { name: "Lightweight Foundation", price: "$24.99", image: "glow guru images/Lightweight_Foundation.webp" }
+          ]);
+        } else if (detectedTone === 'Medium') {
+          suggestionHTML += `<ul>
+                                <li>Hydrating Cream</li>
+                                <li>Tinted Moisturizer</li>
+                                <li>Even Skin Tone Primer</li>
+                              </ul>`;
+          loadProducts([
+            { name: "Hydrating Cream", price: "$34.99", image: "glow guru images/Hydrating_Cream.webp" },
+            { name: "Tinted Moisturizer", price: "$22.99", image: "glow guru images/tinted_Moisturizer.webp" },
+            { name: "Skin Tone Primer", price: "$18.99", image: "glow guru images/Skin_Tone_Primer.webp" }
+          ]);
+        } else if (detectedTone === 'Dark') {
+          suggestionHTML += `<ul>
+                                <li>Nourishing Oil Serum</li>
+                                <li>Rich Moisturizer</li>
+                                <li>Color Correcting Primer</li>
+                              </ul>`;
+          loadProducts([
+            { name: "Oil Serum", price: "$32.99", image: "glow guru images/Oil_Serum.webp" },
+            { name: "Rich Moisturizer", price: "$27.99", image: "glow guru images/Rich_Moisturizer.webp" },
+            { name: "Correcting Primer", price: "$21.99", image: "glow guru images/Correcting_Primer.gif" }
+          ]);
+        }
+      } else if (service === 'facial') {
+        suggestionHTML += `<h3>Home-made Facial Process:</h3>`;
+        if (detectedTone === 'Fair') {
+          suggestionHTML += `<ol>
+                                <li>Cleanse with a gentle cleanser</li>
+                                <li>Mix honey and oatmeal for a soothing mask</li>
+                                <li>Rinse with lukewarm water</li>
+                                <li>Apply a light moisturizer</li>
+                              </ol>`;
+          loadProducts([
+            { name: "Gentle Cleanser", price: "$14.99", image: "glow guru images/Gentle_Cleanser.jpg" },
+            { name: "Honey Oatmeal Mask", price: "$16.99", image: "glow guru images/Honey_Oatmeal_Mask.webp" },
+            { name: "Light Moisturizer", price: "$19.99", image: "glow guru images/Light_Moisturizer.webp" }
+          ]);
+        } else if (detectedTone === 'Medium') {
+          suggestionHTML += `<ol>
+                                <li>Cleanse with a balancing cleanser</li>
+                                <li>Mix yogurt with a pinch of turmeric and lemon</li>
+                                <li>Leave on for 15 minutes</li>
+                                <li>Rinse and use a hydrating cream</li>
+                              </ol>`;
+          loadProducts([
+            { name: "Balancing Cleanser", price: "$15.99", image: "glow guru images/Balancing_Cleanser.webp" },
+            { name: "Yogurt Facial Mask", price: "$17.99", image: "glow guru images/Yogurt_Facial_Mask.webp" },
+            { name: "Hydrating Cream", price: "$20.99", image: "glow guru images/Hydrating_Cream1.webp" }
+          ]);
+        } else if (detectedTone === 'Dark') {
+          suggestionHTML += `<ol>
+                                <li>Cleanse with a moisturizing cleanser</li>
+                                <li>Apply a mask made with avocado and aloe vera</li>
+                                <li>Gently massage the mask into your skin</li>
+                                <li>Finish with a nourishing serum</li>
+                              </ol>`;
+          loadProducts([
+            { name: "Moisturizing Cleanser", price: "$16.99", image: "glow guru images/Moisturizing_Cleanser.webp" },
+            { name: "Avocado Aloe Mask", price: "$18.99", image: "glow guru images/Avocado_Aloe_Mask.webp" },
+            { name: "Nourishing Serum", price: "$25.99", image: "glow guru images/Nourishing_Serum.jpg" }
+          ]);
+        }
+      }
+      
+      document.getElementById('suggestions').innerHTML = suggestionHTML;
+      document.getElementById('resultSection').style.display = 'block';
+      document.getElementById('productSection').style.display = 'block';
+    });
+    
+    // Function to load products dynamically into the product section.
+    function loadProducts(products) {
+      const productList = document.getElementById('productList');
+      productList.innerHTML = ''; // Clear any existing products
+      products.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.className = 'product';
+        productDiv.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <div class="product-info">
+            <h4>${product.name}</h4>
+            <p>${product.price}</p>
+          </div>
+        `;
+        productList.appendChild(productDiv);
+      });
+    }
+  </script>
+</body>
+</html>

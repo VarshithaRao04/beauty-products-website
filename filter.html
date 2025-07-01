@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beauty Products Filter</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    /* Sidebar styling */
+    .sidebar {
+      border-right: 1px solid #ddd;
+      padding: 20px;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    body {
+      background-color: #FAF0E6; /* Beige */
+    }
+
+    /* Color swatches styling */
+    .color-swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+    .color-swatch.active {
+      border: 2px solid #000;
+    }
+    /* Card hover effect */
+    .product-card {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .product-card:hover {
+      transform: scale(1.02);
+    }
+    .add-cart-btn {
+      background-color: #ff4d79;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .add-cart-btn:hover {
+      background-color: #e60050;
+    }
+    
+
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar: Filter Types -->
+      <div class="col-md-3 sidebar">
+        <h4>Filters</h4>
+        <div class="list-group">
+          <a class="list-group-item list-group-item-action" id="filterGender">Gender</a>
+          <a class="list-group-item list-group-item-action" id="filterCategories">Categories</a>
+          <a class="list-group-item list-group-item-action" id="filterRating">Ratings</a>
+          <a class="list-group-item list-group-item-action" id="filterColors">Colors</a>
+          <a class="list-group-item list-group-item-action" id="filterSkinType">Skin Type</a>
+        </div>
+        <!-- Reset Filters Button -->
+        <button class="btn btn-secondary btn-sm mt-3" id="resetFilters">Reset Filters</button>
+      </div>
+      <!-- Main Content: Filter Options and Products -->
+      <div class="col-md-9 p-3" id="contentArea">
+        <h2>Welcome</h2>
+        <p>Select a filter type from the left to begin.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Filtering JavaScript -->
+  <script>
+    // Sample Product Data
+    const allProducts = [
+      { id: 1, name: "Shower Gel", gender: ["male", "female"], category: "Bath & Shower", price: 349, rating: 4.7, color: "green", skinType: "normal",image: "images/shower_gel.jpg" },
+      { id: 2, name: "Body Wash", gender: ["male", "female"], category: "Bath & Shower", price: 490, rating: 4.4, color: "blue", skinType: "dry", image: "images/nourish_body_wash.jpg" },
+      { id: 3, name: "Deodorant Spray", gender: ["male"], category: "Deodorants & Body Sprays", price: 780, rating: 4.8, color: "silver", skinType: "normal", image: "images/deodorant and body spray.avif" },
+      { id: 4, name: "Face Cream", gender: ["female"], category: "Skin Care", price: 249, rating: 5, color: "white", skinType: "dry", image: "images/face_cream.jpg" },
+      { id: 5, name: "Matte Lipstick", gender: ["female"], category: "Lips", price: 399, rating: 4.9, color: "red", skinType: "sensitive", image: "images/matte_lipstick.jpeg" },
+      { id: 6, name: "Aromatic Cologne", gender: ["male"], category: "Fragrances & Deodorants", price: 499, rating: 5, color: "black", skinType: "normal", image: "images/Master.webp" },
+      { id: 7,name: "Hydrating Shower Gel",gender: ["male", "female"],category: "Bath & Shower",price: 18,rating: 4,color: "blue",skinType: "normal",image: "images/Hydrating_Shower_Gel.webp"},
+      { id: 8,name: "Citrus Body Wash",gender: ["male", "female"],category: "Bath & Shower",price: 22,rating: 5,color: "white",skinType: "oily",image: "images/Citrus_Body_Wash.jpeg"},
+      { id: 9,name: "Sport Fresh Deodorant",gender: ["male"],category: "Deodorants & Body Sprays",price: 14,rating: 4,color: "silver",skinType: "normal",image: "images/Sport_Fresh_Deodorant.png"},
+      { id: 10,name: "Floral Mist Body Spray",gender: ["female"],category: "Deodorants & Body Sprays",price: 16,rating: 3,color: "pink",skinType: "sensitive",image: "images/Floral_Mist_Body_Spray1.jpeg"},
+      { id: 11,name: "Aqualogica Face Wash",gender: ["female"],category: "Skin Care",price: 499,rating: 5,color: "red",skinType: "normal",image: "images/Aqualogica_Face_Wash.jpeg"},
+      { id: 12,name: "Revitalizing Night Cream",gender: ["female"],category: "Skin Care",price: 839,rating: 4.4,color: "white",skinType: "dry",image: "images/Revitalizing_Night_Cream.jpg"},
+      { id: 13,name: "Oil Control Gel",gender: ["male", "female"],category: "Skin Care",price: 40,rating: 4,color: "green",skinType: "oily",image: "images/Oil_Control_Gel.webp"},
+      { id: 14,name: "Matte Red Lipstick",gender: ["female"],category: "Lips",price: 28,rating: 5,color: "red",skinType: "sensitive",image: "images/matte_red_lipstick.jpg"},
+      { id: 15,name: "Glossy Pink Lip Gloss",gender: ["female"],category: "Lips",price: 20,rating: 4,color: "pink",skinType: "normal",image: "images/Glossy_Pink Lip_Gloss.webp"},
+      { id: 16,name: "Aromatic Cologne",gender: ["male"],category: "Fragrances & Deodorants",price: 75,rating: 5,color: "blue",skinType: "normal",image: "images/Aromatic Cologne.webp"},
+      { id: 17,name: "Rose Perfume Spray",gender: ["female"],category: "Fragrances & Deodorants",price: 65,rating: 4,color: "pink",skinType: "normal",image: "images/Rose_Perfume_Spray.jpg"},
+      { id: 18,name: "Liquid Foundation - Ivory",gender: ["female"],category: "Makeup",price: 35,rating: 4,color: "beige",skinType: "dry",image: "images/Liquid_Foundatio- Ivory.jpeg"},
+      { id: 19,name: "Creamy Concealer - Sand",gender: ["female"],category: "Makeup",price: 22,rating: 4,color: "beige",skinType: "normal",image: "images/Creamy Concealer - Sand.jpg"},
+      { id: 20,name: "Pressed Powder - Natural",gender: ["female"],category: "Makeup",price: 25,rating: 3,color: "white",skinType: "oily",image: "images/Pressed Powder - Natural.png"},
+      { id: 21,name: "Eyeshadow Palette - Warm Tones",gender: ["female"],category: "Makeup",price: 45,rating: 5,color: "black",skinType: "normal",image: "images/Eyeshadow_Palette-Warm_Tones.jpg"},
+      { id: 22,name: "Herbal Shampoo",gender: ["male", "female"],category: "Haircare",price: 30,rating: 4,color: "green",skinType: "normal",image: "images/Herbal_Shampoo.webp"},
+      { id: 23,name: "Nourishing Conditioner",gender: ["male", "female"],category: "Haircare",price: 32,rating: 4,color: "white",skinType: "dry",image: "images/NourishingConditioner.webp"},
+      { id: 24,name: "Cream Eyeshadow - Plum",gender: ["female"],category: "Makeup",price: 30,rating: 4,color: "purple",skinType: "normal",image: "images/Cream_Eyeshadow-Plum.jpeg"},
+      { id: 25,name: "Liquid Lipstick - Berry",gender: ["female"],category: "Makeup",price: 29,rating: 5,color: "purple",skinType: "sensitive",image: "images/Liquid Lipstick - Berry.jpeg"},
+      { id: 26,name: "Blush Stick - Coral",gender: ["female"],category: "Makeup",price: 24,rating: 4,color: "pink",skinType: "normal",image: "images/Blush_Stick-Coral.jpeg"},
+      { id: 27,name: "Waterproof Eyeliner",gender: ["female"],category: "Eyes, Face & Body Care",price: 25,rating: 4,color: "black",skinType: "normal",image: "images/Waterproof_Eyeliner.avif"},
+      { id: 28,name: 'Aloe Vera Soothing Gel',gender: ['female', 'male'],category: 'Eyes, Face & Body Care',price: 35,rating: 4,color: 'green',skinType: 'sensitive',image: 'images/Aloe_Vera_Soothing_Gel.jpeg'},
+      { id: 29,name: 'Vitamin C Brightening Serum',gender: ['female'],category: 'Eyes, Face & Body Care',price: 55,rating: 5,color: 'red',skinType: 'dry',image: 'images/VitaminC_Brightening_Serum.jpeg'},
+      { id: 30,name: 'Cucumber Eye Cooling Pads',gender: ['female', 'male'],category: 'Eyes, Face & Body Care',price: 25,rating: 4,color: 'green',skinType: 'normal',image: 'images/Cucumber_Eye_Cooling_Pads.jpg'},
+      { id: 31,name: 'Charcoal Face Wash',gender: ['male'],category: 'Eyes, Face & Body Care',price: 30,rating: 4,color: 'black',skinType: 'oily',image: 'images/Charcoal_Face_Wash.jpg'},
+      { id: 32,name: 'Hyaluronic Acid Face Cream',gender: ['female'],category: 'Eyes, Face & Body Care',price: 60,rating: 5,color: 'white',skinType: 'dry',image: 'images/Hyaluronic_Acid_Face_Cream.jpeg'},
+      { id: 33,name: 'Tea Tree Skin Clarifying Gel',gender: ['male', 'female'],category: 'Eyes, Face & Body Care',price: 40,rating: 4,color: 'green',skinType: 'combination',image: 'images/Tea_Tree_Skin_Clarifying_Gel.jpeg'},
+      { id: 34,name: 'Under Eye Dark Circle Remover',gender: ['female', 'male'],category: 'Eyes, Face & Body Care',price: 45,rating: 4,color: 'blue',skinType: 'normal',image: 'images/Under_Eye_Dark_Circle_Remover.webp'},
+      { id: 35,name: 'Face & Body Sunscreen SPF 50',gender: ['female', 'male'],category: 'Eyes, Face & Body Care',price: 50,rating: 5,color: 'beige',skinType: 'combination',image: 'images/Face&Body_Sunscreen_SPF_50.jpeg'},
+      { id: 36,name: 'Herbal Rose Water Toner',gender: ['female'],category: 'Eyes, Face & Body Care',price: 28,rating: 4,color: 'pink',skinType: 'sensitive',image: 'images/Herbal_Rose_Water_Toner.webp'},
+      { id: 37,name: 'Facial Massage Roller',gender: ['female'],category: 'Eyes, Face & Body Care',price: 42,rating: 5,color: 'pink',skinType: 'combination',image: 'images/Facial_Massage_Roller.avif'},
+      { id:38, name:'Argan Oil Shampoo', gender:['female'], category:'Haircare', price:45, rating:4, color:'black', skinType:'normal', image:'images/Argan_Oil_Shampoo.jpeg'}, 
+      { id:39, name:'Keratin Repair Conditioner', gender:['female'], category:'Haircare', price:50, rating:5, color:'white', skinType:'dry', image:'images/Keratin_Repair_Conditioner.png'},
+      { id:40, name:'Men’s Anti-Dandruff Shampoo', gender:['male'], category:'Haircare', price:38, rating:4, color:'blue', skinType:'oily', image:'images/Men’s_Anti-Dandruff_Shampoo.avif'}, 
+      { id:41, name:'Organic Hair Mask', gender:['female','male'], category:'Haircare', price:55, rating:5, color:'green', skinType:'normal', image:'images/Organic_Hair_Mask.webp'},
+      { id:42, name:'Volumizing Dry Shampoo', gender:['female'], category:'Haircare', price:30, rating:4, color:'pink', skinType:'oily', image:'images/Volumizing_Dry_Shampoo.jpg'}, 
+      { id:43, name:'Herbal Hair Oil', gender:['female','male'], category:'Haircare', price:35, rating:4, color:'silver', skinType:'normal', image:'images/Herbal_Hair_Oil.jpg'}, 
+      { id:44, name:'Hair Growth Serum', gender:['female'], category:'Haircare', price:60, rating:5, color:'silver', skinType:'sensitive', image:'images/Hair_Growth_Serum.avif'}, 
+      { id:45, name:'Color-Protect Shampoo', gender:['female'], category:'Haircare', price:48, rating:4, color:'red', skinType:'oily', image:'images/Color-Protect_Shampoo.jpg'}, 
+      { id:46, name:'Leave-In Conditioner Spray', gender:['female','male'], category:'Haircare', price:40, rating:4, color:'purple', skinType:'dry', image:'images/leave-In_Conditioner_Spray.png'}, 
+      { id:47, name:'Frizz Control Hair Cream', gender:['female'], category:'Haircare', price:43, rating:4, color:'pink', skinType:'combination', image:'images/Frizz_Control_Hair_Cream.webp'},
+      {id:48, name:'Organic Cotton Pads', gender:['female'], category:'Feminine Hygiene', price:25, rating:5, color:'white', skinType:'sensitive', image:'images/Organic_Cotton_Pads.jpeg'}, 
+      {id:49, name:'Gentle Intimate Wash', gender:['female'], category:'Feminine Hygiene', price:30, rating:4, color:'pink', skinType:'normal', image:'images/Gentle_Intimate_Wash.jpeg'}, 
+      {id:50, name:'Aloe Vera Wipes', gender:['female'], category:'Feminine Hygiene', price:20, rating:4, color:'green', skinType:'sensitive', image:'images/Aloe_Vera_Wipes.webp'}, 
+      {id:51, name:'Tampons – Regular', gender:['female'], category:'Feminine Hygiene', price:22, rating:4, color:'blue', skinType:'combination', image:'images/Tampons–Regular.webp'},
+      {id:52, name:'Menstrual Cup', gender:['female'], category:'Feminine Hygiene', price:35, rating:5, color:'purple', skinType:'sensitive', image:'images/Menstrual_Cup.webp'}, 
+      {id:53, name:'wishper_pads', gender:['female'], category:'Feminine Hygiene', price:18, rating:4, color:'pink', skinType:'normal', image:'images/wishper_pads.webp'}, 
+      {id:54, name:'Soothing Intimate Gel', gender:['female'], category:'Feminine Hygiene', price:28, rating:5, color:'blue', skinType:'combination', image:'images/Soothing_Intimate_Gel.jpg'}, 
+      {id:55, name:'Period Pain Relief Roll-On', gender:['female'], category:'Feminine Hygiene', price:30, rating:4, color:'green', skinType:'normal', image:'images/Period_Pain_Relief_Roll-On.jpg'}, 
+      {id:56, name:'Cooling Wash for Sensitive Area', gender:['female'], category:'Feminine Hygiene', price:32, rating:4, color:'white', skinType:'sensitive', image:'images/Cooling_Wash_for_Sensitive Area.jpeg'}, 
+      {id:57, name:'Hygiene Powder (Talc-free)', gender:['female'], category:'Feminine Hygiene', price:26, rating:4, color:'beige', skinType:'sensitive', image:'images/HygienePowder(Talc-free).webp'},
+      {id:58, name:'Luxury Eau de Parfum – Floral', gender:['female'], category:'Fragrances & Deodorants', price:85, rating:5, color:'pink', skinType:'sensitive', image:'images/LuxuryEaudeParfum–Floral.jpeg'}, 
+      {id:59, name:'Classic Eau de Toilette – Woody', gender:['male'], category:'Fragrances & Deodorants', price:78, rating:4, color:'brown', skinType:'dry', image:'images/ClassicEaudeToilette–Woody.jpg'}, 
+      {id:60, name:'Roll-On Deodorant – Sensitive', gender:['female'], category:'Fragrances & Deodorants', price:22, rating:4, color:'white', skinType:'sensitive', image:'images/Roll-On_Deodorant_Sensitive.jpeg'}, 
+      {id:61, name:'Alcohol-Free Deodorant Stick', gender:['male'], category:'Fragrances & Deodorants', price:28, rating:4, color:'blue', skinType:'sensitive', image:'images/Alcohol-Free_Deodorant_Stick.jpeg'}, 
+      {id:62, name:'Body Mist – Vanilla Essence', gender:['female'], category:'Fragrances & Deodorants', price:40, rating:5, color:'beige', skinType:'sensitive', image:'images/Body Mist – Vanilla Essence.jpeg'}, 
+      {id:63, name:'Charcoal Deodorant Spray', gender:['male'], category:'Fragrances & Deodorants', price:38, rating:4, color:'grey', skinType:'normal', image:'images/Charcoal_Deodorant_Spray.jpeg'}, 
+      {id:64, name:'Long-lasting Fragrance Mist', gender:['female'], category:'Fragrances & Deodorants', price:55, rating:5, color:'lavender', skinType:'combination', image:'images/Long-lastingFragranceMist.jpg'}, 
+      {id:65, name:'Ocean Fresh Cologne', gender:['male'], category:'Fragrances & Deodorants', price:65, rating:5, color:'teal', skinType:'sensitive', image:'images/Ocean_Fresh_Cologne.jpeg'},
+      {id:66, name:'Natural Deodorant Balm', gender:['female','male'], category:'Fragrances & Deodorants', price:30, rating:4, color:'green', skinType:'sensitive', image:'images/Natural_Deodorant_Balm.jpeg'},
+      {id:67, name:'Luxury Perfume Gift Set', gender:['female'], category:'Fragrance Sets', price:120, rating:5, color:'gold', skinType:'dry', image:'images/Luxury_Perfume_Gift.jpg'}, 
+      {id:68, name:'Men’s Cologne Combo Pack', gender:['male'], category:'Fragrance Sets', price:110, rating:4, color:'blue', skinType:'combination', image:'images/Men’s_Cologne_Combo.jpg'}, 
+      {id:69, name:'Travel Perfume Minis Set', gender:['female'], category:'Fragrance Sets', price:70, rating:4, color:'pink', skinType:'oily', image:'images/Travel_Perfume_Minis_Set.jpeg'}, 
+      {id:70, name:'Romantic Duo Perfume Kit', gender:['female'], category:'Fragrance Sets', price:95, rating:4, color:'red', skinType:'normal', image:'images/Romantic_Duo_Perfume_Kit.jpg'}, 
+      {id:71, name:'luxury His & Her Gift Box', gender:['male','female'], category:'Fragrance Sets', price:150, rating:5, color:'purple', skinType:'combination', image:'images/luxury_His&Her_Gift.jpeg'}, 
+      {id:72, name:'Daily Essentials Body Spray Pack', gender:['male'], category:'Fragrance Sets', price:60, rating:4, color:'black', skinType:'normal', image:'images/Daily_Essentials_Body_Spray_Pack.jpg'}, 
+      {id:73, name:'Aromatic Scents Trio Set', gender:['female'], category:'Fragrance Sets', price:80, rating:4, color:'white', skinType:'oily', image:'images/Aromatic_Scents_Trio_Set.jpg'}, 
+      {id:74, name:'Seasonal Perfume Collection', gender:['female'], category:'Fragrance Sets', price:130, rating:5, color:'green', skinType:'dry', image:'images/Seasonal_Perfume_Collection.png'}, 
+      {id:75, name:'Signature Fragrance Sampler Box', gender:['male','female'], category:'Fragrance Sets', price:100, rating:5, color:'pink', skinType:'all', image:'images/Signature_Fragrance_Sampler_Box.jpg'},
+      {id:76, name:'Detangling Hair Brush', gender:['female'], category:'Hair Care Accessories', price:15, rating:4, color:'pink', skinType:'combination', image:'images/Detangling_Hair_Brush.jpeg'}, 
+      {id:77, name:'Hair Clip Set', gender:['female'], category:'Hair Care Accessories', price:12, rating:4, color:'purple', skinType:'oily', image:'images/Hair_Clip_Set.jpg'}, 
+      {id:78, name:'Silk Hair Wrap', gender:['female'], category:'Hair Care Accessories', price:25, rating:5, color:'white', skinType:'dry', image:'images/silk_hair_wrap.avif'}, 
+      {id:79, name:'Men’s Beard Comb Kit', gender:['male'], category:'Hair Care Accessories', price:18, rating:4, color:'brown', skinType:'normal', image:'images/Men’s_Beard_Comb_Kit.jpeg'}, 
+      {id:80, name:'Mini Hair Rollers Pack', gender:['female'], category:'Hair Care Accessories', price:20, rating:4, color:'blue', skinType:'combination', image:'images/Mini_Hair_Rollers_Pack.jpg'}, 
+      {id:81, name:'Curved Styling Comb', gender:['male','female'], category:'Hair Care Accessories', price:10, rating:3, color:'black', skinType:'combination', image:'images/Curved_Styling_Comb.jpeg'}, 
+      {id:82, name:'Hair Sectioning Clips', gender:['female'], category:'Hair Care Accessories', price:8, rating:3, color:'silver', skinType:'oily', image:'images/Hair_Sectioning_Clips.jpg'}, 
+      {id:83, name:'Velcro Hair Bands Set', gender:['female'], category:'Hair Care Accessories', price:14, rating:4, color:'red', skinType:'dry', image:'images/VelcroHairBands_Set.jpg'}, 
+      {id:86, name:'Heat Resistant Glove', gender:['female'], category:'Hair Care Accessories', price:16, rating:5, color:'grey', skinType:'dry', image:'images/Heat__Resistant_Glove.webp'}, 
+      {id:87, name:'Hair Brush Cleaner Tool', gender:['male','female'], category:'Hair Care Accessories', price:9, rating:4, color:'green', skinType:'oily', image:'images/HairBrush_Cleaner.jpg'},
+      {id:88, name:'Volumizing Hair Mousse', gender:['female'], category:'Hair Styling', price:22, rating:4, color:'white', skinType:'normal', image:'images/volumizing_Hair_Mousse.avif'}, 
+      {id:89, name:'Strong Hold Hair Gel', gender:['male'], category:'Hair Styling', price:15, rating:4, color:'blue', skinType:'dry', image:'images/Strong_Hold_HairGel.webp'}, 
+      {id:90, name:'Curl Defining Cream', gender:['female'], category:'Hair Styling', price:18, rating:5, color:'purple', skinType:'oily', image:'images/CurlDefiningCream.webp'}, 
+      {id:91, name:'Texturizing Spray', gender:['female'], category:'Hair Styling', price:20, rating:4, color:'pink', skinType:'sensitive', image:'images/Texturizing_Spray.jpg'},
+      {id:92, name:'Hair Styling Pomade', gender:['male'], category:'Hair Styling', price:16, rating:3, color:'black', skinType:'combination', image:'images/Hair_Styling_Pomade.webp'}, 
+      {id:93, name:'Frizz Control Serum', gender:['female'], category:'Hair Styling', price:24, rating:5, color:'green', skinType:'oily', image:'images/Frizz_Control_Serum.jpg'}, 
+      {id:94, name:'Flexible Hold Hairspray', gender:['female'], category:'Hair Styling', price:19, rating:4, color:'silver', skinType:'dry', image:'images/Flexible_Hold_Hairspray.webp'}, 
+      {id:95, name:'Shine Finishing Spray', gender:['female'], category:'Hair Styling', price:21, rating:4, color:'gold', skinType:'sensitive', image:'images/Shine_Finishing_Spray.jpg'}, 
+      {id:96, name:'Hair Wax Stick', gender:['male','female'], category:'Hair Styling', price:14, rating:3, color:'grey', skinType:'combination', image:'images/Hair_Wax_Stick.webp'}, 
+      {id:97, name:'Heat Protection Spray', gender:['female'], category:'Hair Styling', price:23, rating:5, color:'red', skinType:'oily', image:'images/Heat_Protection_Spray.jpg'},
+      {id:98, name:'Gel Nail Polish Set', gender:['female'], category:'Nails', price:30, rating:5, color:'red', skinType:'normal', image:'images/GelNailPolishSet.jpg'}, 
+      {id:99, name:'Nail Art Stickers', gender:['female'], category:'Nails', price:10, rating:4, color:'multicolor', skinType:'dry', image:'images/NailArt_Stickers.webp'}, 
+      {id:100, name:'Nail Clipper Kit', gender:['male','female'], category:'Nails', price:12, rating:4, color:'silver', skinType:'sensitive', image:'images/Nail_Clipper_Kit.jpg'}, 
+      {id:101, name:'Cuticle Oil Pen', gender:['female'], category:'Nails', price:8, rating:4, color:'pink', skinType:'combination', image:'images/Cuticle_Oil_Pen.webp'}, 
+      {id:102, name:'Matte Top Coat', gender:['female'], category:'Nails', price:9, rating:4, color:'black', skinType:'oily', image:'images/Matte_Top_Coat.webp'}, 
+      {id:103, name:'UV Nail Lamp', gender:['female'], category:'Nails', price:35, rating:5, color:'white', skinType:'dry', image:'images/UV_Nail_Lamp.jpg'}, 
+      {id:104, name:'Nail Buffer Block', gender:['female'], category:'Nails', price:6, rating:3, color:'purple', skinType:'combination', image:'images/Nail_Buffer_Block.webp'}, 
+      {id:105, name:'Nail File Set', gender:['female'], category:'Nails', price:7, rating:3, color:'blue', skinType:'oily', image:'images/Nail_File_Set.jpg'}, 
+      {id:106, name:'Nail Hardener Treatment', gender:['female'], category:'Nails', price:13, rating:4, color:'clear', skinType:'dry', image:'images/Nail_Hardener_Treatment.jpg'}, 
+      {id:107, name:'Press-On Nails Pack', gender:['female'], category:'Nails', price:11, rating:4, color:'nude', skinType:'combination', image:'images/Press-OnNailsPack.webp'},
+      {id:108, name:'Moisturizing Shampoo', gender:['female'], category:'Shampoos & Conditioners', price:18, rating:4, color:'white', skinType:'oily', image:'images/Moisturizing_Shampoo.webp'}, 
+      {id:109, name:'Volumizing Conditioner', gender:['female'], category:'Shampoos & Conditioners', price:20, rating:4, color:'blue', skinType:'normal', image:'images/Volumizing_Conditioner.jpg'}, 
+      {id:110, name:'Color Protect Shampoo', gender:['female'], category:'Shampoos & Conditioners', price:22, rating:5, color:'red', skinType:'dry', image:'images/Color-Protect_Shampoo.jpg'}, 
+      {id:111, name:'Repair & Restore Conditioner', gender:['female'], category:'Shampoos & Conditioners', price:21, rating:5, color:'pink', skinType:'sensitive', image:'images/Repair & Restore_Conditioner.webp'}, 
+      {id:112, name:'Anti-Dandruff Shampoo', gender:['male','female'], category:'Shampoos & Conditioners', price:19, rating:4, color:'green', skinType:'combination', image:'images/Anti-Dandruff_Shampoo.webp'}, 
+      {id:113, name:'Clarifying Shampoo', gender:['male'], category:'Shampoos & Conditioners', price:17, rating:3, color:'gray', skinType:'normal', image:'images/Clarifying_Shampoo.webp'}, 
+      {id:114, name:'Leave-In Conditioner', gender:['female'], category:'Shampoos & Conditioners', price:23, rating:4, color:'beige', skinType:'oily', image:'images/Leave-In_Conditioner.webp'}, 
+      {id:115, name:'Keratin Shampoo', gender:['female'], category:'Shampoos & Conditioners', price:25, rating:5, color:'brown', skinType:'dry', image:'images/Keratin_Shampoo.webp'}, 
+      {id:116, name:'Tea Tree Shampoo', gender:['male','female'], category:'Shampoos & Conditioners', price:20, rating:4, color:'green', skinType:'sensitive', image:'images/TeaTree_Shampoo.jpg'}, 
+      {id:117, name:'Sulfate-Free Conditioner', gender:['female'], category:'Shampoos & Conditioners', price:24, rating:5, color:'lavender', skinType:'combination', image:'images/Sulfate-Free_Conditioner.jpg'}
+
+
+    ];
+    // Filter Options
+    const filterOptions = {
+      gender: ["male", "female"],
+      categories: [
+        "Bath & Shower", "Deodorants & Body Sprays", "Eyes, Face & Body Care", "Feminine Hygiene",
+        "Fragrance Sets", "Fragrances & Deodorants", "Haircare", "Hair Care Accessories", "Hair Styling",
+        "Lips", "Makeup", "Nails", "Shampoos & Conditioners", "Skin Care"
+      ],
+      rating: [5, 4, 3],
+      colors: ["red", "blue", "green", "pink", "purple", "silver", "white","black","beige"],
+      skinType: ["oily", "dry", "combination", "sensitive", "normal"]
+    };
+
+    // Global Filter State
+    let filterState = {
+      gender: [],
+      categories: [],
+      priceMin: null,
+      priceMax: null,
+      rating: [],
+      color: [],
+      skinType: []
+    };
+    function addToCart(productName, price, imageSrc) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name: productName, price: price, image: imageSrc });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.location.href = "beautyproducts_cart.html";
+    }
+
+    // Render Filter Options for a Filter Type
+    function renderOptions(filterType) {
+      let html = `<h2>${filterType.charAt(0).toUpperCase() + filterType.slice(1)} Options</h2>`;
+      html += `<div class="my-3">`;
+
+      if (filterType === "gender" || filterType === "categories" || filterType === "skinType") {
+        filterOptions[filterType].forEach(option => {
+          html += `
+            <div class="form-check">
+              <input class="form-check-input filter-${filterType}" type="checkbox" value="${option}" id="${filterType}${option}">
+              <label class="form-check-label" for="${filterType}${option}">${option}</label>
+            </div>
+          `;
+        });
+      } else if (filterType === "rating") {
+        filterOptions.rating.forEach(rating => {
+          html += `
+            <div class="form-check">
+              <input class="form-check-input filter-rating" type="checkbox" value="${rating}" id="rating${rating}">
+              <label class="form-check-label" for="rating${rating}">${rating} Stars & Up</label>
+            </div>
+          `;
+        });
+      } else if (filterType === "colors") {
+        filterOptions.colors.forEach(color => {
+          html += `<span class="color-swatch filter-color" data-color="${color}" style="background-color: ${color};" title="${color}"></span>`;
+        });
+      } else if (filterType === "price") {
+        html += `
+          <div class="mb-2">
+            <label for="priceMin" class="form-label">Min Price ($)</label>
+            <input type="number" class="form-control filter-price-min" id="priceMin" placeholder="0">
+          </div>
+          <div>
+            <label for="priceMax" class="form-label">Max Price ($)</label>
+            <input type="number" class="form-control filter-price-max" id="priceMax" placeholder="1000">
+          </div>
+        `;
+      }
+      html += `</div>`;
+      document.getElementById("contentArea").innerHTML = html;
+
+      // Attach event listeners for filter options
+      if (filterType === "gender" || filterType === "categories" || filterType === "skinType" || filterType === "rating") {
+        document.querySelectorAll(`.filter-${filterType}`).forEach(input => {
+          input.addEventListener("change", function () {
+            filterState[filterType] = Array.from(document.querySelectorAll(`.filter-${filterType}:checked`)).map(el => el.value);
+            filterAndRenderProducts();
+          });
+        });
+      } else if (filterType === "colors") {
+        document.querySelectorAll(".filter-color").forEach(swatch => {
+          swatch.addEventListener("click", function () {
+            this.classList.toggle("active");
+            filterState.color = Array.from(document.querySelectorAll(".filter-color.active")).map(el => el.getAttribute("data-color"));
+            filterAndRenderProducts();
+          });
+        });
+      } else if (filterType === "price") {
+        document.querySelectorAll(".filter-price-min, .filter-price-max").forEach(input => {
+        input.addEventListener("input", function () {
+          const minInput = document.querySelector(".filter-price-min").value;
+          const maxInput = document.querySelector(".filter-price-max").value;
+    filterAndRenderProducts();
+  });
+});
+
+      }
+    }
+
+    // Filter Products Based on filterState
+    function filterAndRenderProducts() {
+      const filteredProducts = allProducts.filter(product => {
+        if (filterState.gender.length && !filterState.gender.some(g => product.gender.includes(g))) return false;
+        if (filterState.categories.length && !filterState.categories.includes(product.category)) return false;
+        if (filterState.rating.length && !filterState.rating.some(r => product.rating >= r)) return false;
+        if (filterState.color.length && !filterState.color.includes(product.color)) return false;
+        if (filterState.skinType.length && !filterState.skinType.includes(product.skinType)) return false;
+        return true;
+      });
+      renderProducts(filteredProducts);
+    }
+
+    // Render Filtered Products
+    function renderProducts(products) {
+      let html = `<h2>Filtered Products</h2>`;
+      if (products.length === 0) {
+        html += `<p>No products match the selected filters.</p>`;
+      } else {
+        html += `<div class="row">`;
+        products.forEach(product => {
+          html += `
+            <div class="col-md-4 mb-3 product-card">
+              <div class="card h-100">
+                <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                <div class="card-body">
+                  <h5 class="card-title">${product.name}</h5>
+                  <p class="card-text">${product.category}</p>
+                  <p class="card-text">$${product.price}</p>
+                  <p class="card-text">Rating: ${product.rating} Stars</p>
+                  <button class="add-cart-btn" onclick="addToCart('${product.name}', ${product.price}, '${product.image}')">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+      document.getElementById("contentArea").innerHTML = html;
+    }
+
+    // Event Listeners for Filter Types
+    document.getElementById("filterGender").addEventListener("click", () => renderOptions("gender"));
+    document.getElementById("filterCategories").addEventListener("click", () => renderOptions("categories"));
+    document.getElementById("filterRating").addEventListener("click", () => renderOptions("rating"));
+    document.getElementById("filterColors").addEventListener("click", () => renderOptions("colors"));
+    document.getElementById("filterSkinType").addEventListener("click", () => renderOptions("skinType"));
+
+    // Reset Filters
+    document.getElementById("resetFilters").addEventListener("click", function () {
+      filterState = {
+        gender: [],
+        categories: [],
+        rating: [],
+        color: [],
+        skinType: []
+      };
+      renderOptions("gender"); // Reset to default filter type
+      filterAndRenderProducts();
+    });
+  
+  </script>
+</body>
+</html>

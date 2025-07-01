@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart - Beauty Bliss</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f1f4;
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        color: #d63384;
+    }
+    .cart-item {
+        background: white;
+        display: inline-block;
+        width: 200px;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    .cart-item img {
+        width: 100%;
+        border-radius: 8px;
+    }
+    .cart-item h3 {
+        margin: 5px 0;
+    }
+    .cart-item p {
+        margin: 3px 0;
+    }
+    button {
+        background: #ff4d79;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-top: 8px;
+    }
+    button:hover {
+        background: #e60050;
+    }
+    #total {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 20px 0;
+    }
+</style>
+</head>
+<body>
+<h1>Your Cart</h1>
+<div id="cartContainer"></div>
+<div id="total"></div>
+<button id="payButton" style="display:none;">Pay Now</button>
+
+<script>
+    function displayCart() {
+        const cartContainer = document.getElementById("cartContainer");
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const totalDiv = document.getElementById("total");
+        const payButton = document.getElementById("payButton");
+
+        cartContainer.innerHTML = "";
+        let total = 0;
+
+        if (cart.length === 0) {
+            cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+            totalDiv.innerHTML = "";
+            payButton.style.display = "none";
+            return;
+        }
+
+        cart.forEach((item, index) => {
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "cart-item";
+            itemDiv.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <h3>${item.name}</h3>
+                <p>Price: ₹${item.price}</p>
+                <button onclick="removeFromCart(${index})">Remove</button>
+            `;
+            cartContainer.appendChild(itemDiv);
+            total += item.price;
+        });
+
+        totalDiv.innerText = "Total Amount to Pay: ₹" + total;
+        payButton.style.display = "inline-block";
+        payButton.onclick = function() {
+            alert("Thank you for your payment of ₹" + total + "!");
+            localStorage.removeItem("cart");
+            displayCart();
+        };
+    }
+
+    function removeFromCart(index) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        displayCart();
+    }
+
+    displayCart();
+</script>
+</body>
+</html>

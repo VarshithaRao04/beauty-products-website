@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty Bliss - Your Beauty Destination</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+        <img src="images/snv-logo.png" alt="SNV Logo" class="logo" />
+    </div>
+    <nav class="navigation">
+        <ul>
+            <li><a href="beautyproducts.html">Home</a></li>
+            <li><a href="skincare.html">Skincare</a></li>
+            <li><a href="makeup.html">Makeup</a></li>
+            <li><a href="haircare.html">Haircare</a></li>
+            <li><a href="fragrances.html">Fragrances</a></li>
+            <li><a href="filter.html">Filters</a></li>
+            <li><a href="personalized beauty solutions.html">Glow Guru</a></li>
+            <li><a href="beautyproducts_cart.html">cart</a></li>
+        </ul>
+    </nav>
+    <div class="search-container">
+        <form id="search-form" class="search-form" method="get">
+          <input type="search" name="q" placeholder="Search for products..." required>
+          <button type="submit">
+            <!-- <img src="search-icon.svg" alt="Search"> -->
+             <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+           
+        </form>
+    </div>
+</header>
+
+
+    <section class="slider-section">
+        <div class="slider-container">
+          <div class="slider-wrapper">
+            <!-- Slide 1 -->
+            <div class="slide">
+              <img src="slides/complete fragrance.1.jpg" alt="Complete fragrance">
+              <div class="overlay-text">FRAGRANCE</div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide">
+              <img src="slides/complete makeup.webp" alt="complete makeup">
+              <div class="overlay-text">MAKEUP</div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="slide">
+              <img src="slides/complete skincare [products.webp" alt="complete skinncare">
+              <div class="overlay-text">SKINCARE</div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="slide">
+              <img src="slides/DALL·E 2025-03-24 11.32.44 - A professionally arranged flat lay image of a complete haircare produc.webp" alt="haircare">
+              <div class="overlay-text">HAIRCARE</div>
+            </div>
+            
+          </div>
+          <!-- Navigation Buttons -->
+          <button class="slider-btn left" id="slide-btn-left">&#10094;</button>
+          <button class="slider-btn right" id="slide-btn-right">&#10095;</button>
+          <!-- Slide Indicators -->
+          <div class="slider-indicators">
+            <span class="indicator active" data-slide="0"></span>
+            <span class="indicator" data-slide="1"></span>
+            <span class="indicator" data-slide="2"></span>
+            <span class="indicator" data-slide="3"></span>
+            <span class="indicator" data-slide="4"></span>
+          </div>
+        </div>
+      </section>
+    <!-- <section class="hero">
+        <h2>Discover Your Beauty</h2>
+        <p>Shop the best beauty products for glowing skin and stunning looks.</p>
+        <button>Shop Now</button>
+    </section> -->
+    
+    <section class="products">
+        <h2>Featured Products</h2>
+        <div class="product-list">
+            <div class="product">
+                <img src="beauty images/skincare images/luxury lipstick" alt="Luxury Lipstick">
+                <h3>Luxury Lipstick</h3>
+                <p>₹1999</p>
+                <button onclick="addToCart('Luxury Lipstick', 1999, 'beauty images/skincare images/luxury lipstick')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="beauty images/skincare images/flawless foundation.jpg" alt="Flawless Foundation">
+                <h3>Flawless Foundation</h3>
+                <p>₹2999</p>
+                <button onclick="addToCart('Flawless Foundation', 2999, 'beauty images/skincare images/Flawless Foundation.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="beauty images/skincare images/Carlton London Signature Perfume" alt="Signature Perfume">
+                <h3>Signature Perfume</h3>
+                <p>₹4999</p>
+                <button onclick="addToCart('Signature Perfume', 4999, 'beauty images/skincare images/Carlton London Signature Perfume')">Add to Cart</button>
+            </div>
+            <div class="product">
+              <img src="beauty images/skincare images/glycolic acid.jpg" alt="glycolic acid">
+              <h3>glycolic acid </h3>
+              <p>₹900</p>
+              <button onclick="addToCart('glycolic acid', 900, 'beauty images/skincare images/glycolic acid.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+              <img src="beauty images/skincare images/clea foam.webp" alt="clea foam">
+              <h3>clea foam</h3>
+              <p>₹3499</p>
+              <button onclick="addToCart('clea foam', 3499, 'beauty images/skincare images/clea foam.webp')">Add to Cart</button>
+            </div>
+            <div class="product">
+              <img src="beauty images/skincare images/hydrating serum.jpg" alt="hydrating serum">
+              <h3>hydrating serum</h3>
+              <p>₹199</p>
+              <button onclick="addToCart('hydrating serum', 199, 'beauty images/skincare images/hydrating serum.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+              <img src="beauty images/skincare images/lipstick.webp" alt="lipstick">
+              <h3>lipstick</h3>
+              <p>₹299</p>
+              <button onclick="addToCart('lipstick', 299, 'beauty images/skincare images/lipstick.webp')">Add to Cart</button>
+            </div>
+            <div class="product">
+              <img src="beauty images/skincare images/Neutrogena Ultra Sheer Dry-Touch Sunscreen SPF 55.jpg" alt="neutrogena uitra">
+              <h3>Neutrogena Uitra</h3>
+              <p>₹199</p>
+              <button onclick="addToCart('Neutrogena Uitra', 199, 'beauty images/skincare images/Neutrogena Ultra Sheer Dry-Touch Sunscreen SPF 55.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+              <img src="beauty images/skincare images/Olay Regenerist Micro-Sculpting Cream.jpg" alt="olay regenerist">
+              <h3>olay Regenerist</h3>
+              <p>₹190</p>
+              <button onclick="addToCart('olay Regenerist', 190, 'beauty images/skincare images/Olay Regenerist Micro-Sculpting Cream.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+              <img src="beauty images/skincare images/retinol night cream.jpg" alt="retinol night cream">
+              <h3>retinol night cream</h3>
+              <p>₹2999</p>
+              <button onclick="addToCart('retinol night cream', 2999, 'beauty images/skincare images/retinol night cream.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+              <img src="beauty images/skincare images/spf 50 sunscreen.jpg" alt="suncreen">
+              <h3>suncreen</h3>
+              <p>₹299</p>
+              <button onclick="addToCart('sunscreen', 299, 'beauty images/skincare images/spf 50 sunscreen.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+              <img src="beauty images/skincare images/Centella.png" alt="centella">
+              <h3>centella</h3>
+              <p>₹919</p>
+              <button onclick="addToCart('centella', 919, 'beauty images/skincare images/Centella.png')">Add to Cart</button>
+          </div>
+          
+          <div class="product">
+              <img src="beauty images/skincare images/Neutrogenar.jpeg" alt="Neutrogena">
+              <h3>Neutrogena</h3>
+              <p>₹1049</p>
+              <button onclick="addToCart('Neutrogena', 1049, 'beauty images/skincare images/Neutrogenar.jpeg')">Add to Cart</button>
+          </div>
+          <div class="product">
+              <img src="beauty images/skincare images/facial cleanser kashmiri saffron" alt="kashmiri saffron ">
+              <h3>Facial cleanser</h3>
+              <p>₹1295</p>
+              <button onclick="addToCart('Facial cleanser', 1295, 'beauty images/skincare images/facial cleanser kashmiri saffron')">Add to Cart</button>
+          </div>
+
+          <div class="product">
+              <img src="beauty images/skincare images/lakme sun expert" alt="lakme sun expert">
+              <h3>lakme sunstick</h3>
+              <p>₹279</p>
+              <button onclick="addToCart('lakme sunstick', 279, 'beauty images/skincare images/lakme sun expert')">Add to Cart</button>
+          </div>
+          <div class="product">
+              <img src="beauty images/skincare images/Snail 96 mucin.jpeg" alt="Snail 96 mucin">
+              <h3>Snail 96 mucin</h3>
+              <p>₹1233</p>
+              <button onclick="addToCart('Snail 96 mucin', 1233, 'beauty images/skincare images/Snail 96 mucin.jpeg')">Add to Cart</button>
+          </div>
+          <div class="product">
+              <img src="beauty images/skincare images/suncreen.jpg" alt="suncreen">
+              <h3>sunscreen </h3>
+              <p>₹1049</p>
+              <button onclick="addToCart('sunscreen', 1049, 'beauty images/skincare images/sunscreen.jpg')">Add to Cart</button>
+          </div>
+          <div class="product">
+              <img src="beauty images/skincare images/watermelon sunscreen.webp" alt="watermelon sunscreen">
+              <h3>watermelon suncreen </h3>
+              <p>₹387</p>
+              <button onclick="addToCart('watermelon suncreen', 387, 'beauty images/skincare images/watermelon sunscreenwebp')">Add to Cart</button>
+          </div>
+        </div>
+    </section>
+    <div id="not-found" class="hidden">Item not found</div>
+    
+    <footer>
+        <p>&copy; 2025 DAYALA VARSHITHA RAO BEAUTY PRODUCTS . All Rights Reserved.</p>
+    </footer>
+<script>
+function addToCart(productName, price, imageSrc) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name: productName, price: price, image: imageSrc });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.location.href = "beautyproducts_cart.html"; // Redirect to cart page
+}
+</script>
+</body>
+</html>

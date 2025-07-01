@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haircare - Beauty Bliss</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f8ff;
+            text-align: center;
+        }
+        header {
+            background-color : #c7baa8;
+            color: white;
+            padding: 15px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .products {
+            padding: 20px;
+        }
+        .products h2 {
+            font-size: 30px;
+            color: #005bb5;
+        }
+        .product-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .product {
+            background: #ead8c0;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 250px;
+            text-align: center;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .product button {
+            background-color: #0073e6;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .product button:hover {
+            background-color: #005bb5;
+        }
+        footer {
+            background-color: #0073e6;
+            color: white;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+
+    <script>
+        function addToCart(productName, price, imageSrc) {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.push({ name: productName, price: price, image: imageSrc });
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert(productName + " has been added to your cart!");
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Beauty Bliss</h1>
+        <nav>
+            <ul>
+                <li><a href="beautyproducts.html">Home</a></li>
+                <li><a href="skincare.html">Skincare</a></li>
+                <li><a href="makeup.html">Makeup</a></li>
+                <li><a href="haircare.html">Haircare</a></li>
+                <li><a href="fragrances.html">Fragrances</a></li>
+                <li><a href="filter.html">Filters</a></li>
+                <li><a href="personalized beauty solutions.html">Glow Guru</a></li>
+                <li><a href="beautyproducts_cart.html">Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="products">
+        <h2>Haircare Collection</h2>
+        <div class="product-list">
+            <div class="product">
+                <img src="beauty images/haircare images/Arata Intensive Hair Growth Serum.webp" alt="protein shampoo">
+                <h3>hair Growth</h3>
+                <p>₹1499</p>
+                <button onclick="addToCart('Protein Shampoo', 14.99, 'beauty images/haircare images/Arata Intensive Hair Growth Serum.webp')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="beauty images/haircare images/Bare Anatomy Ultra Smoothing Hair Mask.jpeg" alt="hair mask">
+                <h3>Hair Mask</h3>
+                <p>₹1699</p>
+                <button onclick="addToCart('Hair Mask', 16.99, 'beauty images/haircare images/Bare Anatomy Ultra Smoothing Hair Mask.jpeg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="images/Keratin_Repair_Conditioner.png" alt="permanent hair color">
+                <h3>Protein shampoo</h3>
+                <p>1999</p>
+                <button onclick="addToCart('Permanent Hair Color', 19.99, 'beauty images/haircare images/Biotique Bio Kelp Fresh Growth Protein Shampoo.jpeg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="beauty images/haircare images/Biotique Bio Margosa Anti-Dandruff Shampoo.jpeg" alt="head and shoulder">
+                <h3>Anti-Dandruff shampoo</h3>
+                <p>299</p>
+                <button onclick="addToCart('Head and Shoulders', 299, 'beauty images/haircare images/Biotique Bio Margosa Anti-Dandruff Shampoo.jpeg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="images/Men’s_Anti-Dandruff_Shampoo.avif" alt="head and shoulder">
+                <h3>Anti-Dandruff shampoo</h3>
+                <p>299</p>
+                <button onclick="addToCart('Head and Shoulders', 24.99, 'beauty images/haircare images/Christina Moss Naturals Organic Hair Mask.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="images/Organic_Hair_Mask.webp" alt="head and shoulder">
+                <h3>hair</h3>
+                <p>2599</p>
+                <button onclick="addToCart('Head and Shoulders', 2599, 'images/Organic_Hair_Mask.webp')">Add to Cart</button>
+            </div>
+            <!-- <div class="product">
+                <img src="beauty images/haircare images/Goldwell Topchic Permanent Hair Color.jpg" alt="head and shoulder">
+                <h3>hair color</h3>
+                <p>2599</p>
+                <button onclick="addToCart('Head and Shoulders', 2599, 'beauty images/haircare images/Goldwell Topchic Permanent Hair Color.jpg')">Add to Cart</button>
+            </div> -->
+            <div class="product">
+                <img src="images/Color-Protect_Shampoo.jpg" alt="head and shoulder">
+                <h3>color protect shampoo</h3>
+                <p>299</p>
+                <button onclick="addToCart('color protect shampoo', 299, 'vimages/Color-Protect_Shampoo.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="beauty images/haircare images/loreal mask.jpeg" alt="head and shoulder">
+                <h3>loreal mask</h3>
+                <p>249</p>
+                <button onclick="addToCart('Head and Shoulders', 249, 'beauty images/haircare images/loreal mask.jpeg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="beauty images/haircare images/loreal mask.jpeg.jpg" alt="head and shoulder">
+                <h3>loreal mask</h3>
+                <p>499</p>
+                <button onclick="addToCart('loreal mask', 499, 'beauty images/haircare images/loreal mask.jpeg.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="images/Volumizing_Dry_Shampoo.jpg" alt="dry shampoo">
+                <h3>dry shampoo</h3>
+                <p>499</p>
+                <button onclick="addToCart('dry shampoo', 499, 'images/Volumizing_Dry_Shampoo.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="images/Herbal_Hair_Oil.jpg" alt="head and shoulder">
+                <h3>Hair oil</h3>
+                <p>499</p>
+                <button onclick="addToCart('Hair oil', 499, 'images/Herbal_Hair_Oil.jpg')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="images/Hair_Growth_Serum.avif" alt="head and shoulder">
+                <h3>hair growth serum</h3>
+                <p>499</p>
+                <button onclick="addToCart('hair growth serum', 499, 'images/Hair_Growth_Serum.avif')">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 DAYALA VARSHITHA RAO BEAUTY PRODUCTS . All Rights Reserved.</p>
+    </footer>
+<script>
+function addToCart(productName, price, imageSrc) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name: productName, price: price, image: imageSrc });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.location.href = "beautyproducts_cart.html"; // Redirect to cart page
+}
+</script>
+</body>
+</html>
