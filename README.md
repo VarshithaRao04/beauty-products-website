@@ -16,6 +16,15 @@ The application combines a responsive frontend, a Node.js and Express.js backend
 
 The primary goal is to build a complete shopping platform where customers can explore products, manage their accounts, and access their shopping and order information through a simple and intuitive interface.
 
+## Technology Stack
+
+ Frontend -- HTML5, CSS3, JavaScript 
+ Backend -- Node.js, Express.js 
+ Database -- MySQL 
+ Authentication & Security -- JWT, bcrypt, HTTP-only Cookies 
+ API -- REST API 
+ Version Control -- Git, GitHub 
+
 **Project Highlights**
 
 |Area |                  Description|
